@@ -1,0 +1,1339 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Researcher Management API",
+    "description": "This API provides access to researcher and publication data with automated scraping capabilities. The API endpoints support CRUD operations for researchers, publication search functionality, and automated publication scraping from institutional repositories."
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Enter JWT Bearer token **_only_**"
+      }
+    },
+    "schemas": {
+      "MissingAuthHeader": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Authorization header ('Bearer token') not found"
+          }
+        }
+      },
+      "TokenExpired": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "JWT token has expired"
+          }
+        }
+      },
+      "InvalidJWT": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid JWT token"
+          }
+        }
+      },
+      "InvalidPageFormat": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid page format. page must be a number."
+          }
+        }
+      },
+      "InvalidYearFormat": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid year format. Year must be between 1900 and current year."
+          }
+        }
+      },
+      "InvalidIdFormat": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid researcher ID format"
+          }
+        }
+      },
+      "NotFound": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Researcher not found"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Name is required and must be a non-empty string"
+          }
+        }
+      },
+      "DuplicateError": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Researcher with this name and institution already exists"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/researchers": {
+      "get": {
+        "tags": ["Researchers"],
+        "description": "Returns a paginated list of researchers with their associated publications. The list is ordered by creation date.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of researchers per page (max 100)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved researchers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "count": {
+                      "type": "integer",
+                      "example": 25
+                    },
+                    "total": {
+                      "type": "integer",
+                      "example": 150
+                    },
+                    "page": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "pages": {
+                      "type": "integer",
+                      "example": 3
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "507f1f77bcf86cd799439011"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Dr. Jane Smith"
+                          },
+                          "institution": {
+                            "type": "string",
+                            "example": "MIT"
+                          },
+                          "researchAreas": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "example": ["Machine Learning", "Computer Vision"]
+                          },
+                          "publications": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "_id": {
+                                  "type": "string",
+                                  "example": "507f1f77bcf86cd799439012"
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "example": "Deep Learning Applications in Healthcare"
+                                },
+                                "year": {
+                                  "type": "string",
+                                  "example": "2023"
+                                },
+                                "url": {
+                                  "type": "string",
+                                  "example": "https://example.com/paper.pdf"
+                                }
+                              }
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-12-01T10:30:00.000Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-12-01T10:30:00.000Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to fetch researchers"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Researchers"],
+        "description": "Create a new researcher with optional automated publication scraping",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "institution"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "Dr. John Doe"
+                  },
+                  "institution": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "Stanford University"
+                  },
+                  "researchAreas": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 10,
+                    "example": ["Artificial Intelligence", "Natural Language Processing"]
+                  },
+                  "scrapeUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://eprints.stanford.edu/view/creators/Doe=3AJohn=3A=3A.html"
+                  },
+                  "autoScrape": {
+                    "type": "boolean",
+                    "default": true,
+                    "example": true
+                  },
+                  "skipExisting": {
+                    "type": "boolean",
+                    "default": true,
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Researcher created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Researcher created successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "507f1f77bcf86cd799439011"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Dr. John Doe"
+                        },
+                        "institution": {
+                          "type": "string",
+                          "example": "Stanford University"
+                        },
+                        "researchAreas": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": ["Artificial Intelligence", "Natural Language Processing"]
+                        },
+                        "publications": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    },
+                    "scraping": {
+                      "type": "object",
+                      "properties": {
+                        "attempted": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "successful": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "publicationsFound": {
+                          "type": "integer",
+                          "example": 15
+                        },
+                        "error": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Researcher already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DuplicateError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to create researcher"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/researchers/{id}": {
+      "get": {
+        "tags": ["Researchers"],
+        "description": "Get detailed information about a specific researcher including publications and scraping metadata",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The MongoDB ObjectId of the researcher",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Researcher data retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "507f1f77bcf86cd799439011"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Dr. Jane Smith"
+                        },
+                        "institution": {
+                          "type": "string",
+                          "example": "MIT"
+                        },
+                        "researchAreas": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": ["Machine Learning", "Computer Vision"]
+                        },
+                        "research_areas": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": ["Machine Learning", "Computer Vision"]
+                        },
+                        "publications": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "example": "507f1f77bcf86cd799439012"
+                              },
+                              "title": {
+                                "type": "string",
+                                "example": "Deep Learning Applications in Healthcare"
+                              },
+                              "authors": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "example": ["Dr. Jane Smith", "Dr. Bob Johnson"]
+                              },
+                              "year": {
+                                "type": "string",
+                                "example": "2023"
+                              },
+                              "url": {
+                                "type": "string",
+                                "example": "https://example.com/paper.pdf"
+                              },
+                              "tags": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "example": ["AI", "Healthcare"]
+                              }
+                            }
+                          }
+                        },
+                        "scraping_info": {
+                          "type": "object",
+                          "nullable": true,
+                          "properties": {
+                            "auto_scraped": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "last_scrape_attempt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2023-12-01T10:30:00.000Z"
+                            },
+                            "scrape_url": {
+                              "type": "string",
+                              "example": "https://eprints.mit.edu/view/creators/Smith=3AJane=3A=3A.html"
+                            },
+                            "attempted": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "successful": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "publications_found": {
+                              "type": "integer",
+                              "example": 15
+                            },
+                            "error": {
+                              "type": "string",
+                              "nullable": true,
+                              "example": null
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/InvalidIdFormat"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Query parameters are not permitted for this endpoint"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Researcher not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to fetch researcher"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Researchers"],
+        "description": "Update an existing researcher's information",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The MongoDB ObjectId of the researcher",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "Dr. Jane Smith-Updated"
+                  },
+                  "institution": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "Harvard University"
+                  },
+                  "researchAreas": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 10,
+                    "example": ["Machine Learning", "Computer Vision", "Robotics"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Researcher updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "507f1f77bcf86cd799439011"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Dr. Jane Smith-Updated"
+                        },
+                        "institution": {
+                          "type": "string",
+                          "example": "Harvard University"
+                        },
+                        "researchAreas": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": ["Machine Learning", "Computer Vision", "Robotics"]
+                        },
+                        "publications": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/InvalidIdFormat"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationError"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/MissingAuthHeader"
+                    },
+                    {
+                      "$ref": "#/components/schemas/InvalidJWT"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TokenExpired"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Researcher not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicate researcher",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DuplicateError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to update researcher"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Researchers"],
+        "description": "Delete a researcher and remove them from associated publications",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The MongoDB ObjectId of the researcher",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Researcher deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Researcher deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid researcher ID format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidIdFormat"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/MissingAuthHeader"
+                    },
+                    {
+                      "$ref": "#/components/schemas/InvalidJWT"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TokenExpired"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Researcher not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to delete researcher"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/researchers/{id}/scrape": {
+      "post": {
+        "tags": ["Researchers"],
+        "description": "Manually trigger publication scraping for an existing researcher",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The MongoDB ObjectId of the researcher",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{24}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "scrapeUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://eprints.stanford.edu/view/creators/Doe=3AJohn=3A=3A.html"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scraping completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully scraped 15 publications"
+                    },
+                    "publications_found": {
+                      "type": "integer",
+                      "example": 15
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/InvalidIdFormat"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "No scraping URL available. Please provide a scrapeUrl."
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/MissingAuthHeader"
+                    },
+                    {
+                      "$ref": "#/components/schemas/InvalidJWT"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TokenExpired"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Researcher not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Scraping failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Scraping failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+  "/api/publications/search": {
+    "get": {
+      "tags": ["Publications"],
+      "summary": "Search publications",
+      "description": "Search for publications with optional filters for title, year, and author. Results are paginated and sorted by year (descending) and ID.",
+      "parameters": [
+        {
+          "name": "title",
+          "in": "query",
+          "description": "Filter by publication title (case-insensitive partial match)",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "machine learning"
+          }
+        },
+        {
+          "name": "year",
+          "in": "query",
+          "description": "Filter by publication year (exact match)",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "pattern": "^\\d{4}$",
+            "example": "2023"
+          }
+        },
+        {
+          "name": "author",
+          "in": "query",
+          "description": "Filter by author name (case-insensitive partial match)",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "jane smith"
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "description": "Page number for pagination",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "example": 1
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Publications retrieved successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Publication"
+                    }
+                  },
+                  "pagination": {
+                    "type": "object",
+                    "properties": {
+                      "total": {
+                        "type": "integer",
+                        "example": 250,
+                        "description": "Total number of publications matching the search"
+                      },
+                      "lastPage": {
+                        "type": "integer",
+                        "example": 3,
+                        "description": "Last page number"
+                      },
+                      "perPage": {
+                        "type": "integer",
+                        "example": 100,
+                        "description": "Number of results per page"
+                      },
+                      "currentPage": {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "Current page number"
+                      },
+                      "from": {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "Starting result number for current page"
+                      },
+                      "to": {
+                        "type": "integer",
+                        "example": 100,
+                        "description": "Ending result number for current page"
+                      },
+                      "nextPage": {
+                        "type": "integer",
+                        "nullable": true,
+                        "example": 2,
+                        "description": "Next page number (null if on last page)"
+                      },
+                      "prevPage": {
+                        "type": "integer",
+                        "nullable": true,
+                        "example": null,
+                        "description": "Previous page number (null if on first page)"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid query parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvalidYearFormat"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Failed to search publications"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/publications/data/{id}": {
+    "get": {
+      "tags": ["Publications"],
+      "summary": "Get publication by ID",
+      "description": "Get detailed information about a specific publication including associated researchers. Query parameters are not permitted for this endpoint.",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "The MongoDB ObjectId of the publication",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$",
+            "example": "507f1f77bcf86cd799439012"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Publication retrieved successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "$ref": "#/components/schemas/Publication"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Invalid publication ID format"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Query parameters are not permitted for this endpoint"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Publication not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Publication not found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Failed to fetch publication"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+}

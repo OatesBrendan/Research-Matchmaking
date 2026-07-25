@@ -1,0 +1,101 @@
+const { ObjectId } = require('mongoose').Types;
+
+
+const validateName = (str, res) => {
+    
+    if (!str || typeof str !== 'string') {
+        res.status(401).json({ success: false, message: 'Invalid name format' });
+        return false;
+    }
+    if (str.length > 255) {
+        res.status(400).json({ success: false, message: 'Name exceeds maximum length of 255 characters' });
+        return false;
+    }
+    let regex = /^[a-zA-Z0-9'-\\s]+$/;
+    if(regex.test(cleanString(str))) {
+        return true;
+    }
+    res.status(400).json({ success: false, message: 'Invalid name format' });
+    return false;
+}
+
+const cleanString = (str) => {
+  return str.replace(/[^a-zA-Z0-9'-\s]/g, '');
+}
+
+
+
+const validateId = (id, res) => {
+  if (!ObjectId.isValid(id)) {
+    res.status(400).json({ success: false, message: 'Invalid ID format' });
+    return false;
+  }
+  return true;
+};
+
+const validateRequestBody = (requiredFields, req, res) => {
+  if(!req.body || typeof req.body !== 'object') {
+    if(requiredFields.length === 0) {
+      return true;
+    } else {
+      res.status(400).json({ success: false, message: 'Missing request body' });
+      return false;
+    }
+  }
+  if(Object.keys(req.body).length > requiredFields.length) {
+    res.status(400).json({ success: false, message: 'Request body contains unexpected fields' });
+    return false;
+  }
+  for (const key in req.body) {
+    if (typeof req.body[key] === 'string' && req.body[key].length > 255) {
+      res.status(400).json({ success: false, message: `Field ${key} exceeds maximum length of 255 characters` });
+      return false;
+    }
+  }
+  return true;
+}
+
+const requireBodyFields = (requiredFields, req, res) => {
+  for (const field of requiredFields) {
+    if (!req.body[field] || (typeof req.body[field] === 'string' && !req.body[field].trim())) {
+      res.status(400).json({ success: false, message: `Field ${field} is required` });
+      return false;
+    } 
+  }
+}
+
+const validateParams = (allowedParams, req, res) => {
+  if(!req.params || typeof req.params !== 'object') {
+    if(allowedParams.length === 0) {
+      return true;
+    } else {
+      res.status(400).json({ success: false, message: 'Missing required parameters' });
+      return false;
+    }
+  }
+  for (const param in req.params) {
+    if (!allowedParams.includes(param)) {
+      res.status(400).json({ success: false, message: `Unexpected parameter: ${param}` });
+      return false;
+    }
+  }
+ 
+  return true;
+};
+
+const rejectQueryParams = (req, res) => {
+  if (Object.keys(req.query).length > 0) {
+    res.status(400).json({ success: false, message: 'Query parameters not permitted' });
+    return true;
+  }
+  return false;
+};
+
+module.exports = {
+  validateId,
+  validateRequestBody,
+  validateParams,
+  rejectQueryParams,
+  validateName,
+  cleanString
+};
