@@ -1,0 +1,68 @@
+/* Dark mode button/toggle styling */
+.theme-toggle-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.theme-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: var(--toggle-bg);
+    border-radius: 50%;
+    border: 2px solid var(--toggle-border);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.05);
+}
+
+.sun,
+.moon {
+    position: absolute;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    height: 60%;
+}
+
+.sun {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+    transition: all 0.5s ease-in-out;
+}
+
+.moon {
+    opacity: 0;
+    transform: translate(-100%, -100%) rotate(-180deg);
+    transition: all 0.5s ease-in-out;
+}
+
+/* Sun and moon SVG icons */
+.sun-icon,
+.moon-icon {
+    width: 100%;
+    height: 100%;
+}
+
+/* When dark mode is active */
+[data-theme="dark"] .sun {
+    opacity: 0;
+    transform: translate(100%, 100%) rotate(180deg);
+}
+
+[data-theme="dark"] .moon {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+}

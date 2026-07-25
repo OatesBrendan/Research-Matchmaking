@@ -1,0 +1,264 @@
+/* Researcher Profile Styles */
+
+@media (max-width: 768px){
+  .profile-container{
+    padding: 0 !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+  }
+  .profile-header, .section{
+    margin: 0;
+    width: 100%;
+  }
+}
+
+.profile-page {
+  background-color: #f8fafc;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 2rem 1rem;
+}
+
+.profile-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  min-height: 400px;
+  width: 45%;
+  min-width: 600px;
+  margin: 0 auto;
+}
+
+/* Loading & Error States */
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  text-align: center;
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #e2e8f0;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.error-state h2 {
+  color: #dc2626;
+  margin-bottom: 0.5rem;
+}
+
+.error-state p {
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.error-state button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.error-state button:hover {
+  background: #2563eb;
+}
+
+/* Profile Header */
+.profile-header {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.header-info h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.institution {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+.stats span {
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Sections */
+.section {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Publications */
+.publications {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 500px;
+  min-width: 100%;
+}
+
+.publications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.publications-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.publication {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1rem;
+  background-color: inherit;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, border-radius 0.2s ease;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0 0.5rem 1rem;
+}
+
+.publication:hover {
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transform: scale(1.02);
+  background-color: inherit;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.publication-preview:hover {
+  transform: scale(1) !important;
+}
+
+.publication-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.no-link {
+  cursor: not-allowed !important;
+}
+
+.publication h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.year,
+.journal {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.abstract {
+  color: #4b5563;
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+
+/* Contact */
+.email-link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.email-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  .profile-page {
+    padding: 1rem 0.5rem;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .header-info h1 {
+    font-size: 1.5rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+}
+
+.wide {
+  min-width: 100% !important;
+}

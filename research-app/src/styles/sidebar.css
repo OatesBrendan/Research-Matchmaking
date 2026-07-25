@@ -1,0 +1,117 @@
+/* Admin side bar styling */
+.sidebar-profile {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.sidebar-profile:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--qut-light-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+}
+
+.profile-info {
+    white-space: nowrap;
+}
+
+.profile-name {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.profile-role {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.sidebar.collapsed .profile-info {
+    display: none;
+}
+
+/* Profile Link Styles */
+.sidebar-profile {
+    color: inherit;
+    transition: all 0.2s;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.sidebar-profile:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.profile-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #8a2131;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.profile-info {
+    line-height: 1.2;
+}
+
+.profile-name {
+    font-weight: 500;
+}
+
+.profile-role {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Context Menu Styles */
+.context-menu {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 180px;
+    background-color: var(--bg-secondary);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.context-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+    color: var(--text-primary);
+}
+
+.context-item:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.context-item i {
+    width: 16px;
+    text-align: center;
+}
+
+/* For collapsed sidebar */
+.position-relative {
+    position: relative;
+}

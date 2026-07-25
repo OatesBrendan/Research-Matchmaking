@@ -1,0 +1,270 @@
+/* Theme colours and variables */
+
+/* Light Mode (default) */
+:root {
+    --qut-dark-blue: #003D64;
+    --qut-blue: #2563eb;
+    --qut-light-blue: #0072CE;
+    --qut-vlight-blue: #dbeafe;
+    --qut-yellow: #F6A01A;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f4f7fc;
+    --text-primary: #333333;
+    --text-secondary: #fff;
+    --text-tertiary: #4b5563;
+    --text-light: #9ca3af;
+    --border-color: #e2e8f0;
+    --border-secondary: #e2e8f0;
+    --scrollbar-width: 12px;
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-thumb-hover: #a8a8a8;
+    --sidebar-width: 300px;
+    --sidebar-collapsed-width: 70px;
+    --transition-speed: 0.3s;
+
+    --qut-danger: #f8d7da;
+}
+
+/* Dark mode */
+[data-theme="dark"] {
+    --qut-dark-blue: #003D64;
+    --qut-blue: #2563eb;
+    --qut-light-blue: #0072CE;
+    --qut-vlight-blue: #dbeafe;
+    --qut-yellow: #f8c46c;
+    --bg-primary: #1a202c;
+    --bg-secondary: #2d3748;
+    --bg-tertiary: #181e27;
+    --text-primary: #E4E4E4;
+    --text-secondary: #e2e8f0;
+    --text-tertiary: #b1bbc8;
+    --text-light: #9ca3af;
+    --border-color: #4a5568;
+    --border-secondary: #e2e8f0;
+    --scrollbar-track: #2a3343;
+    --scrollbar-thumb: #4a5568;
+    --scrollbar-thumb-hover: #5a6575;
+
+    --qut-danger: #f8c6ca;
+}
+
+/* Background Colors */
+.bg-qut-blue {
+    background-color: var(--qut-blue) !important;
+}
+
+.hover\:bg-qut-blue:hover {
+    background-color: var(--qut-blue) !important;
+}
+
+.bg-qut-dark-blue {
+    background-color: var(--qut-dark-blue) !important;
+}
+
+.hover\:bg-qut-dark-blue:hover {
+    background-color: var(--qut-dark-blue) !important;
+}
+
+.bg-qut-light-blue {
+    background-color: var(--qut-light-blue) !important;
+}
+
+.hover\:bg-qut-light-blue:hover {
+    background-color: var(--qut-light-blue) !important;
+}
+
+.bg-qut-vlight-blue {
+    background-color: var(--qut-vlight-blue) !important;
+}
+
+.hover\:bg-qut-vlight-blue:hover {
+    background-color: var(--qut-vlight-blue) !important;
+}
+
+.bg-qut-yellow {
+    background-color: var(--qut-yellow) !important;
+}
+
+.hover\:bg-qut-yellow:hover {
+    background-color: var(--qut-yellow) !important;
+}
+
+.qut-bg-primary {
+    background-color: var(--bg-primary) !important;
+}
+
+.hover\:qut-bg-primary:hover {
+    background-color: var(--bg-primary) !important;
+}
+
+.qut-bg-secondary {
+    background-color: var(--bg-secondary) !important;
+}
+
+.hover\:qut-bg-secondary:hover {
+    background-color: var(--bg-secondary) !important;
+}
+
+.qut-bg-tertiary {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.hover\:qut-bg-tertiary:hover {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.bg-qut-danger {
+    background-color: var(--qut-danger) !important;
+}
+
+.hover\:bg-qut-danger {
+    background-color: var(--qut-danger) !important;
+}
+
+/* Text Colors */
+.text-qut-blue {
+    color: var(--qut-dark-blue) !important;
+}
+
+.hover\:text-qut-blue:hover {
+    color: var(--qut-dark-blue) !important;
+}
+
+.text-qut-light-blue {
+    color: var(--qut-light-blue) !important;
+}
+
+.hover\:text-qut-light-blue:hover {
+    color: var(--qut-light-blue) !important;
+}
+
+.text-qut-vlight-blue {
+    color: var(--qut-vlight-blue) !important;
+}
+
+.hover\:text-qut-vlight-blue:hover {
+    color: var(--qut-vlight-blue) !important;
+}
+
+.text-qut-yellow {
+    color: var(--qut-yellow) !important;
+}
+
+.hover\:text-qut-yellow:hover {
+    color: var(--qut-yellow) !important;
+}
+
+.text-qut-light {
+    color: var(--text-light) !important;
+}
+
+.hover\:text-qut-light:hover {
+    color: var(--text-light) !important;
+}
+
+.qut-text-primary {
+    color: var(--text-primary) !important;
+}
+
+.hover\:qut-text-primary:hover {
+    color: var(--text-primary) !important;
+}
+
+.qut-text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+.hover\:qut-text-secondary:hover {
+    color: var(--text-secondary) !important;
+}
+
+.qut-text-tertiary {
+    color: var(--text-tertiary) !important;
+}
+
+.hover\:qut-text-tertiary:hover {
+    color: var(--text-tertiary) !important;
+}
+
+.text-qut-danger {
+    color: var(--qut-danger) !important;
+}
+
+.hover\:text-qut-danger {
+    color: var(--qut-danger) !important;
+}
+
+/* Border Colors */
+.border-qut-blue {
+    border-color: var(--qut-blue) !important;
+}
+
+.hover\:border-qut-blue:hover {
+    border-color: var(--qut-blue) !important;
+}
+
+.border-qut-light-blue {
+    border-color: var(--qut-light-blue) !important;
+}
+
+.hover\:border-qut-light-blue:hover {
+    border-color: var(--qut-light-blue) !important;
+}
+
+.border-qut-vlight-blue {
+    border-color: var(--qut-vlight-blue) !important;
+}
+
+.hover\:border-qut-vlight-blue:hover {
+    border-color: var(--qut-vlight-blue) !important;
+}
+
+.border-qut-yellow {
+    border-color: var(--qut-yellow) !important;
+}
+
+.hover\:border-qut-yellow:hover {
+    border-color: var(--qut-yellow) !important;
+}
+
+.qut-border-primary {
+    border-color: var(--border-color) !important;
+}
+
+.hover\:qut-border-primary:hover {
+    border-color: var(--border-color) !important;
+}
+
+.border-transparent {
+    border-color: transparent !important;
+}
+
+.hover\:border-transparent:hover {
+    border-color: transparent !important;
+}
+
+.border-qut-danger {
+    border-color: var(--qut-danger) !important;
+}
+
+.hover\:border-qut-danger {
+    border-color: var(--qut-danger) !important;
+}
+
+/* Transition effects for smooth hover animations */
+.transition {
+    transition: all 0.2s ease-in-out;
+}
+
+.transition-color {
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.hover\:bg-qut-blue:focus,
+.hover\:text-qut-blue:focus,
+.hover\:border-qut-blue:focus {
+    outline: 2px solid var(--qut-light-blue) !important;
+    outline-offset: 2px;
+}

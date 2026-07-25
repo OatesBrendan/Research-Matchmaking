@@ -1,0 +1,65 @@
+{
+  "name": "research-app",
+  "version": "1.0.0",
+  "private": true,
+  "main": "main.js",
+  "homepage": "./",
+  "icon": "./public/favicon.ico",
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@tanstack/react-query": "^5.90.5",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.9.0",
+    "bootstrap": "^5.3.5",
+    "d3": "^7.9.0",
+    "lucide-react": "^0.511.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-dropdown-select": "^4.12.2",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.5.1",
+    "react-scripts": "5.0.1",
+    "react-scroll": "^1.9.3",
+    "research-app": "file:",
+    "serve": "^14.2.5",
+    "styled-components": "^6.1.17",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron:start": "electron . ELECTRON_START_URL=http://localhost",
+    "electron:build": "npx @electron/packager . researchApp --platform=win32,darwin,linux --arch=x64,arm64 --out=dist --overwrite --asar --icon=./public/favicon",
+    "electron:build-win": "npx @electron/packager . researchApp --platform=win32 --arch=x64 --overwrite --out=dist --prune=true --ignore='/node_modules' --icon='./public/favicon.ico' --asar",
+    "electron:build-lin": "npx @electron/packager . researchApp --platform=linux --arch=x64 --overwrite --out=dist --prune=true --ignore='/node_modules' --icon='./public/logo192.png' --asar",
+    "electron:build-mac": "npx @electron/packager . researchApp --platform=darwin --arch=universal --overwrite --out=dist --prune=true --ignore='/node_modules' --icon='./public/favicon.ico' --asar"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@electron/packager": "^19.0.1",
+    "electron": "^38.4.0"
+  }
+}

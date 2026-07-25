@@ -1,0 +1,52 @@
+/* User Routes Navbar Styling */
+
+.qut-logo {
+    height: 40px;
+    object-fit: contain;
+}
+
+/* App header styles (if still using) */
+.App-header {
+    background-color: #003D64;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.App-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.App-logo-break {
+    height: 1px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0.75rem 0;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+/* Making bootstrap buttons match QUT theme */
+.btn-primary {
+    background-color: var(--qut-dark-blue) !important;
+    border-color: var(--border-primary) !important;
+}
+.btn-primary:hover {
+    background-color: var(--qut-blue) !important;
+    border-color: var(--border-secondary) !important;
+}
+
+[data-theme="dark"] .btn-primary {
+    background-color: var(--qut-blue) !important;
+    border-color: var(--border-primary) !important;
+}
+[data-theme="dark"] .btn-primary:hover {
+    background-color: var(--qut-light-blue) !important;
+    border-color: var(--border-secondary) !important;
+}

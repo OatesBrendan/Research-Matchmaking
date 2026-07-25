@@ -1,0 +1,28 @@
+@import url('./styles/variables.css');
+@import url('./styles/navbar.css');
+@import url('./styles/tags.css');
+@import url('./styles/sign-up.css');
+@import url('./styles/back-button.css');
+@import url('./styles/scroll-to-top.css');
+@import url('./styles/darkmodeToggle.css');
+@import url('./styles/scrollbar.css');
+@import url('./styles/sidebar.css');
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.clickable:hover{
+  cursor: pointer;
+}
+
+.capitalise::first-letter{
+  text-transform: capitalize;
+}

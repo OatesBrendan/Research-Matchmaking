@@ -1,0 +1,237 @@
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: #666;
+  border-bottom: 3px solid transparent;
+}
+
+.tabs button.active {
+  color: #4361ee;
+  border-bottom-color: #4361ee;
+}
+
+.tabs button:hover {
+  color: #3a56d4;
+}
+
+.tab-content {
+  padding: 20px 0;
+}
+
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.loading, .empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.jobs-list, .logs-list, .researchers-list {
+  display: grid;
+  gap: 15px;
+}
+
+.job-card, .researcher-card, .log-entry {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.job-header, .log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.in-progress {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-badge.failed {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.cancelled {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
+.progress-container {
+  margin: 10px 0;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #4361ee;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.job-actions, .researcher-actions {
+  margin-top: 10px;
+}
+
+.scraping-form {
+  max-width: 600px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+}
+
+.checkbox-group input {
+  margin-right: 8px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background-color: #4361ee;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #3a56d4;
+}
+
+.btn-primary:disabled {
+  background-color: #6c8aff;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.log-entry {
+  border-left: 4px solid #ddd;
+}
+
+.log-entry .completed {
+  border-left-color: #28a745;
+}
+
+.log-entry .in-progress {
+  border-left-color: #17a2b8;
+}
+
+.log-entry .failed {
+  border-left-color: #dc3545;
+}
+
+.log-entry .pending {
+  border-left-color: #ffc107;
+}
+
+.log-date {
+  font-size: 12px;
+  color: #666;
+}
+
+.log-message {
+  margin: 5px 0;
+}
+
+.log-details {
+  font-size: 12px;
+  color: #666;
+  background-color: #f8f9fa;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 5px;
+  overflow-x: auto;
+}
+
+.researcher-info h4 {
+  margin: 0 0 5px 0;
+}
+
+.researcher-info p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #666;
+}
