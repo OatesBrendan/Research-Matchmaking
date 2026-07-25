@@ -1,0 +1,32 @@
+networks:
+  researcher-network:
+    driver: bridge
+
+services:
+  frontend:
+    build:
+      context: ./research-app
+      args:
+        REACT_APP_ENDPOINT: ${REACT_APP_ENDPOINT:-http://localhost:8080}
+    env_file:
+      - ./research-app/.env
+    environment:
+      PORT: ${FRONTEND_PORT:-3000}
+    ports:
+      - ${FRONTEND_PORT:-3000}:${FRONTEND_PORT:-3000}
+    depends_on:
+      - backend
+    networks:
+      - researcher-network
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      NODE_ENV: production
+    env_file:
+      - ./backend/.env
+    ports:
+      - ${BACKEND_PORT:-8080}:${BACKEND_PORT:-8080}
+    networks:
+      - researcher-network
